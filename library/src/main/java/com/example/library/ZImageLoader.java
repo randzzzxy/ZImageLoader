@@ -3,6 +3,7 @@ package com.example.library;
 import android.app.Activity;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
 
 /**
  * @author ZhongXinyu
@@ -10,9 +11,9 @@ import androidx.fragment.app.FragmentActivity;
  */
 
 public class ZImageLoader {
-    public static BitMapRequest with(FragmentActivity activity){
-        RequestManager.getInstance().setLifeCycle(activity);
-        return new BitMapRequest(activity);
+    public static BitMapRequest with(Lifecycle lifecycle){
+        RequestManager.getInstance().setLifeCycle(lifecycle);
+        return new BitMapRequest();
     }
 
 

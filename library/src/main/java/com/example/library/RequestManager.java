@@ -35,10 +35,7 @@ public class RequestManager implements LifecycleObserver {
      */
     private ThreadPoolExecutor threadPool;
 
-    /**
-     * 获取活动对象
-     */
-    FragmentActivity activity;
+
 
 
     private RequestManager(){
@@ -46,9 +43,8 @@ public class RequestManager implements LifecycleObserver {
     }
 
 
-    public void setLifeCycle(FragmentActivity activity){
-        this.activity = activity;
-        activity.getLifecycle().addObserver(this);
+    public void setLifeCycle(Lifecycle lifeCycle){
+        lifeCycle.addObserver(this);
     }
 
     private void createThradPool() {
@@ -92,6 +88,5 @@ public class RequestManager implements LifecycleObserver {
     public void onDestroy(){
         threadPool.shutdownNow();
         requestQueue.clear();
-        activity = null;
     }
 }

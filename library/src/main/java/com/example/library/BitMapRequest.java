@@ -14,8 +14,6 @@ import java.lang.ref.SoftReference;
  *
  */
 public class BitMapRequest {
-    //上下文
-    private Activity activity;
     //图片路径
     private String url;
     //控件引用
@@ -31,8 +29,7 @@ public class BitMapRequest {
      */
     private String md5;
 
-    public BitMapRequest(Activity activity){
-        this.activity = activity;
+    public BitMapRequest(){
     }
 
     public BitMapRequest load(String url){
