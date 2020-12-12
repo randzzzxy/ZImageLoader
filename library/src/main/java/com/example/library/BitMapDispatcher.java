@@ -44,11 +44,12 @@ public class BitMapDispatcher implements Runnable {
             showLoadingImage(request);
             //请求图片
             Bitmap bitmap = requestBitMap(request);
-
-            if(bitmap == null){
-                request.getListener().onFaild();
-            }else{
-                request.getListener().onSuccess(bitmap);
+            if(request.getListener() != null){
+                if(bitmap == null){
+                    request.getListener().onFaild();
+                }else{
+                    request.getListener().onSuccess(bitmap);
+                }
             }
             showImageView(request,bitmap);
         } catch (InterruptedException e) {
