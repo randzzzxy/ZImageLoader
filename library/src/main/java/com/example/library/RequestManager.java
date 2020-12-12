@@ -5,6 +5,13 @@ package com.example.library;
  * @作用
  */
 
+import android.app.Activity;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -13,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 管理请求队列
  */
-public class RequestManager {
+public class RequestManager implements LifecycleObserver {
     /**
      * 单例模式
      */
@@ -28,8 +35,20 @@ public class RequestManager {
      */
     private ThreadPoolExecutor threadPool;
 
+    /**
+     * 获取活动对象
+     */
+    FragmentActivity activity;
+
+
     private RequestManager(){
         createThradPool();
+    }
+
+
+    public void setLifeCycle(FragmentActivity activity){
+        this.activity = activity;
+        activity.getLifecycle().addObserver(this);
     }
 
     private void createThradPool() {
@@ -64,5 +83,15 @@ public class RequestManager {
             BitMapDispatcher dispatcher = new BitMapDispatcher(requestQueue);
             threadPool.execute(dispatcher);
         }
+    }
+
+    /**
+     *当活动销毁时回收资源
+     */
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    public void onDestroy(){
+        threadPool.shutdownNow();
+        requestQueue.clear();
+        activity = null;
     }
 }

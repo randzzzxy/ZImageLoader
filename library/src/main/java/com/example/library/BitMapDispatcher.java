@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 
 import com.example.library.cache.CacheUtils;
+import com.example.library.utils.ImageConpressUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,7 +93,9 @@ public class BitMapDispatcher implements Runnable {
             URL url = new URL(request.getUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             is = connection.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
+            //进行采样率优化
+            bitmap = ImageConpressUtils.decodeSampleBitmapFromStream(is,request.getImageView().getWidth(),request.getImageView().getHeight());
+//            bitmap = BitmapFactory.decodeStream(is);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

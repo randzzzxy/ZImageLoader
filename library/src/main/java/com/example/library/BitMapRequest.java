@@ -1,5 +1,6 @@
 package com.example.library;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.ImageView;
 
@@ -14,7 +15,7 @@ import java.lang.ref.SoftReference;
  */
 public class BitMapRequest {
     //上下文
-    private Context context;
+    private Activity activity;
     //图片路径
     private String url;
     //控件引用
@@ -30,8 +31,8 @@ public class BitMapRequest {
      */
     private String md5;
 
-    public BitMapRequest(Context context){
-        this.context = context;
+    public BitMapRequest(Activity activity){
+        this.activity = activity;
     }
 
     public BitMapRequest load(String url){

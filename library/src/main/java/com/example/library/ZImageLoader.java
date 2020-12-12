@@ -1,6 +1,8 @@
 package com.example.library;
 
-import android.content.Context;
+import android.app.Activity;
+
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * @author ZhongXinyu
@@ -8,8 +10,9 @@ import android.content.Context;
  */
 
 public class ZImageLoader {
-    public static BitMapRequest with(Context context){
-        return new BitMapRequest(context);
+    public static BitMapRequest with(FragmentActivity activity){
+        RequestManager.getInstance().setLifeCycle(activity);
+        return new BitMapRequest(activity);
     }
 
 
