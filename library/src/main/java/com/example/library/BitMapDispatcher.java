@@ -11,7 +11,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 
-import com.example.zimageloader.cache.CacheUtils;
+
+import com.example.library.cache.CacheUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -3,7 +3,8 @@ package com.example.library;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.example.zimageloader.utils.MD5Utils;
+
+import com.example.library.utils.MD5Utils;
 
 import java.lang.ref.SoftReference;
 
