@@ -92,9 +92,8 @@ public class BitMapDispatcher implements Runnable {
         try {
             URL url = new URL(request.getUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            is = connection.getInputStream();
             //进行采样率优化
-            bitmap = ImageConpressUtils.decodeSampleBitmapFromStream(is,request.getImageView().getWidth(),request.getImageView().getHeight());
+            bitmap = ImageConpressUtils.decodeSampleBitmapFromStream(connection,request.getImageView().getWidth(),request.getImageView().getHeight());
 //            bitmap = BitmapFactory.decodeStream(is);
 
         } catch (MalformedURLException e) {

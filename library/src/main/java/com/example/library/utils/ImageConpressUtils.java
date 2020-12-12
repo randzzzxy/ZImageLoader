@@ -5,7 +5,10 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.WindowManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 
 /**
  * @author ZhongXinyu
@@ -17,16 +20,38 @@ public class ImageConpressUtils {
      * 采样率优化
      * @return
      */
-    public  static Bitmap decodeSampleBitmapFromStream(InputStream is,int reqWidth,int reqHeight){
+    public  static Bitmap decodeSampleBitmapFromStream(HttpURLConnection connection, int reqWidth, int reqHeight){
+        InputStream is = null;
+        try {
+            is = connection.getInputStream();
+            final BitmapFactory.Options options= new BitmapFactory.Options();
+            options.inJustDecodeBounds=true;
+            BitmapFactory.decodeStream(is,null,options);
+            is.close();
+            is = connection.getInputStream();
+            //计算采样率
+            options.inSampleSize=calculateInSampleSize(options,reqWidth,reqHeight);
+
+            options.inJustDecodeBounds=false;
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            return bitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public  static Bitmap decodeSampleBitmapFromFile(File file, int reqWidth, int reqHeight){
         final BitmapFactory.Options options= new BitmapFactory.Options();
         options.inJustDecodeBounds=true;
-        BitmapFactory.decodeStream(is,null,options);
+        BitmapFactory.decodeFile(file.getAbsolutePath(),options);
 
         //计算采样率
         options.inSampleSize=calculateInSampleSize(options,reqWidth,reqHeight);
 
         options.inJustDecodeBounds=false;
-        return BitmapFactory.decodeStream(is,null,options);
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(),options);
+        return bitmap;
     }
 
     /**
