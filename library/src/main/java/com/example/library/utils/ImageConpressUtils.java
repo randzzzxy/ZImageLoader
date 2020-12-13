@@ -27,6 +27,7 @@ public class ImageConpressUtils {
         }
         InputStream is = null;
         HttpURLConnection connection = null;
+        Bitmap bitmap = null;
         try {
             connection = (HttpURLConnection) url.openConnection();
             is = connection.getInputStream();
@@ -41,19 +42,18 @@ public class ImageConpressUtils {
             options.inSampleSize=calculateInSampleSize(options,reqWidth,reqHeight);
 
             options.inJustDecodeBounds=false;
-            Bitmap bitmap = BitmapFactory.decodeStream(is,null,options);
-            return bitmap;
+            bitmap = BitmapFactory.decodeStream(is,null,options);
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
             try {
                 is.close();
                 connection.disconnect();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+            return bitmap;
         }
-        return null;
     }
 
     public  static Bitmap decodeSampleBitmapFromFile(File file, int reqWidth, int reqHeight){
