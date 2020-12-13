@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * @author ZhongXinyu
@@ -20,14 +21,15 @@ public class ImageConpressUtils {
      * 采样率优化
      * @return
      */
-    public  static Bitmap decodeSampleBitmapFromStream(HttpURLConnection connection, int reqWidth, int reqHeight){
+    public  static Bitmap decodeSampleBitmapFromStream(URL url, int reqWidth, int reqHeight){
         InputStream is = null;
+        HttpURLConnection connection = null;
         try {
+            connection = (HttpURLConnection) url.openConnection();
             is = connection.getInputStream();
-            final BitmapFactory.Options options= new BitmapFactory.Options();
+            BitmapFactory.Options options= new BitmapFactory.Options();
             options.inJustDecodeBounds=true;
             BitmapFactory.decodeStream(is,null,options);
-            is.close();
             is = connection.getInputStream();
             //计算采样率
             options.inSampleSize=calculateInSampleSize(options,reqWidth,reqHeight);
@@ -37,6 +39,12 @@ public class ImageConpressUtils {
             return bitmap;
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

@@ -18,8 +18,9 @@ public class DiskCache implements BaseCache {
     private static final String CACHE_PATH= "/storage/emulated/0/Android/data/com.example.zimageloader/cache/";
     @Override
     public void put(String key, Bitmap value) {
+        File file = null;
         try {
-            File file=new File(CACHE_PATH,key);
+            file=new File(CACHE_PATH,key);
             //通过得到文件的父文件,判断父文件是否存在
             File parentFile = file.getParentFile();
             if (!parentFile.exists()){
@@ -31,6 +32,7 @@ public class DiskCache implements BaseCache {
             value.compress(Bitmap.CompressFormat.JPEG,100,new FileOutputStream(file));
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
         }
 
 
