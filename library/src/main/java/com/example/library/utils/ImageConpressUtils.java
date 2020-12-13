@@ -22,6 +22,9 @@ public class ImageConpressUtils {
      * @return
      */
     public  static Bitmap decodeSampleBitmapFromStream(URL url, int reqWidth, int reqHeight){
+        if(reqHeight == 0 || reqWidth == 0){
+            return null;
+        }
         InputStream is = null;
         HttpURLConnection connection = null;
         try {
@@ -30,18 +33,22 @@ public class ImageConpressUtils {
             BitmapFactory.Options options= new BitmapFactory.Options();
             options.inJustDecodeBounds=true;
             BitmapFactory.decodeStream(is,null,options);
+            is.close();
+            connection.disconnect();
+            connection = (HttpURLConnection) url.openConnection();
             is = connection.getInputStream();
             //计算采样率
             options.inSampleSize=calculateInSampleSize(options,reqWidth,reqHeight);
 
             options.inJustDecodeBounds=false;
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            Bitmap bitmap = BitmapFactory.decodeStream(is,null,options);
             return bitmap;
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
             try {
                 is.close();
+                connection.disconnect();
             } catch (IOException e) {
                 e.printStackTrace();
             }
